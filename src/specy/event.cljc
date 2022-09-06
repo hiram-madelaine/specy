@@ -1,5 +1,6 @@
 (ns specy.event
   (:require [tick.core :as t]
+            [malli.core :as m]
             [malli.util :as mu]
             [specy.uuid :as uuid]
             [specy.validation :as sv]
@@ -35,7 +36,8 @@
   [event-name schema {:keys [doc] :as options}]
   (let [ns *ns*
         metadata-props (map first (rest metadata-schema))
-        props (map first (rest schema))
+        schema-data (m/form (eval schema))
+        props (map first (rest schema-data))
         schema-ref-symbol (symbol (str event-name "-schema"))
         builder-ref-symbol (symbol (str "->" (name event-name)))]
     `(do
