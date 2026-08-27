@@ -4,6 +4,7 @@
             [malli.util :as mu]
             [specy.uuid :as uuid]
             [specy.validation :as sv]
+            [specy.registry :as sr]
             [specy.time :as time]
             [specy.protocols :refer [store!]]
             [specy.infra.repository :refer [building-blocks]])
@@ -36,7 +37,7 @@
   [command-name schema {:keys [doc] :as options}]
   (let [ns *ns*
         metadata-props (map first (rest metadata-schema))
-        schema-data (m/form (eval schema))
+        schema-data (m/form (eval schema) {:registry (sr/get-registry)})
         props (map first (rest schema-data))
         schema-ref-symbol (symbol (str command-name "-schema"))
         builder-ref-symbol (symbol (str "->" (name command-name)))]
